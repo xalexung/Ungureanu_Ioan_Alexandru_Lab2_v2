@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Ungureanu_Ioan_Alexandru_Lab2.Data;
 using Ungureanu_Ioan_Alexandru_Lab2.Models;
 
-namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Books
+namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Categories
 {
     public class DetailsModel : PageModel
     {
@@ -19,9 +19,7 @@ namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Books
             _context = context;
         }
 
-        public Book Book { get; set; } = default!;
-
-        public ICollection<BookCategory> BookCategories { get; set; } = new List<BookCategory>();
+        public Category Category { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,20 +28,14 @@ namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Book
-                .Include(b => b.Author)
-                .Include(b => b.Publisher)
-                .Include(b => b.BookCategories)
-                .ThenInclude(bc => bc.Category)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (book == null)
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
+            if (category == null)
             {
                 return NotFound();
             }
             else
             {
-                Book = book;
-                BookCategories = book.BookCategories.ToList();
+                Category = category;
             }
             return Page();
         }

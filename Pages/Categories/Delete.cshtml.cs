@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Ungureanu_Ioan_Alexandru_Lab2.Data;
 using Ungureanu_Ioan_Alexandru_Lab2.Models;
 
-namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Books
+namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Categories
 {
     public class DeleteModel : PageModel
     {
@@ -20,9 +20,8 @@ namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Books
         }
 
         [BindProperty]
-        public Book Book { get; set; } = default!;
+        public Category Category { get; set; } = default!;
 
-        public ICollection<BookCategory> BookCategories { get; set; } = new List<BookCategory>();
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -30,21 +29,15 @@ namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Book
-                .Include(b => b.Author)
-                .Include(b => b.Publisher)
-                .Include(b => b.BookCategories)
-                .ThenInclude(bc => bc.Category)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (book == null)
+            if (category == null)
             {
                 return NotFound();
             }
             else
             {
-                Book = book;
-                BookCategories = book.BookCategories.ToList();
+                Category = category;
             }
             return Page();
         }
@@ -56,11 +49,11 @@ namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Books
                 return NotFound();
             }
 
-            var book = await _context.Book.FindAsync(id);
-            if (book != null)
+            var category = await _context.Category.FindAsync(id);
+            if (category != null)
             {
-                Book = book;
-                _context.Book.Remove(Book);
+                Category = category;
+                _context.Category.Remove(Category);
                 await _context.SaveChangesAsync();
             }
 

@@ -42,6 +42,23 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Book.Publisher.PublisherName)
         </dd>
+        <dt class="col-sm-2">
+            Categories
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Book.BookCategories != null && Model.Book.BookCategories.Any())
+            {
+                foreach (var bookCategory in Model.Book.BookCategories)
+                {
+                    <span>@bookCategory.Category.CategoryName</span>
+                    <br />
+                }
+            }
+            else
+            {
+                <span>No categories assigned.</span>
+            }
+        </dd>
     </dl>
 
     <form method="post">
