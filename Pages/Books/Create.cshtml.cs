@@ -21,14 +21,14 @@ namespace Ungureanu_Ioan_Alexandru_Lab2.Pages.Books
 
         public IActionResult OnGet()
         {
-            ViewData["AuthorID"] = new SelectList(
-                _context.Author.Select(a => new {
-                    ID = a.ID,
-                    FullName = a.FirstName + " " + a.LastName
-                }),
-                "ID",
-                "FullName");
-
+            //ViewData["AuthorID"] = new SelectList(
+            //    _context.Author.Select(a => new {
+            //        ID = a.ID,
+            //        FullName = a.FirstName + " " + a.LastName
+            //    }),
+            //    "ID",
+            //    "FullName");
+            ViewData["AuthorID"] = new SelectList(_context.Set<Author>(), "ID", "FullName");
             ViewData["PublisherID"] = new SelectList(_context.Set<Publisher>(), "ID","PublisherName");
 
             var book = new Book();
